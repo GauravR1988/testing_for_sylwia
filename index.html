@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        .container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: #f0f0f0;
+        }
+        
+        .bubble {
+            position: relative;
+            border-radius: 50%;
+            margin: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+        
+        .bubble-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            color: white;
+            font-family: Arial, sans-serif;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.05); opacity: 0.9; }
+            100% { transform: scale(1); opacity: 0.7; }
+        }
+        
+        .info-panel {
+            display: none;
+            position: absolute;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+            max-width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bubble" id="traffic" style="width: 150px; height: 150px; background: rgba(128,128,128,0.8);">
+            <div class="bubble-content">
+                <h3>Traffic</h3>
+                <p>30% CO₂</p>
+            </div>
+        </div>
+        
+        <div class="bubble" id="vehicle" style="width: 180px; height: 180px; background: rgba(128,128,128,0.9);">
+            <div class="bubble-content">
+                <h3>Vehicle</h3>
+                <p>59% CO₂</p>
+            </div>
+        </div>
+        
+        <div class="bubble" id="weather" style="width: 130px; height: 130px; background: rgba(128,128,128,0.7);">
+            <div class="bubble-content">
+                <h3>Weather</h3>
+                <p>25% CO₂</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="info-panel" class="info-panel"></div>
+
+    <script>
+        const bubbleData = {
+            traffic: {
+                title: "Traffic Impact",
+                details: "• Idle time increases fuel usage\n• Stop-and-go: +30% CO₂\n• Peak hours worsen impact"
+            },
+            vehicle: {
+                title: "Vehicle Impact",
+                details: "• Vans: 3-4x higher CO₂\n• Fleet composition crucial\n• EVs reduce emissions by 59%"
+            },
+            weather: {
+                title: "Weather Impact",
+                details: "• Extends delivery times\n• Increases fuel consumption\n• Adds 20-25% more CO₂"
+            }
+        };
+
+        const bubbles = document.querySelectorAll('.bubble');
+        const infoPanel = document.getElementById('info-panel');
+
+        bubbles.forEach(bubble => {
+            bubble.addEventListener('mouseover', (e) => {
+                const data = bubbleData[e.currentTarget.id];
+                infoPanel.innerHTML = `<h3>${data.title}</h3><p>${data.details}</p>`;
+                infoPanel.style.display = 'block';
+                infoPanel.style.left = e.pageX + 20 + 'px';
+                infoPanel.style.top = e.pageY + 'px';
+            });
+
+            bubble.addEventListener('mouseout', () => {
+                infoPanel.style.display = 'none';
+            });
+        });
+    </script>
+</body>
+</html>
