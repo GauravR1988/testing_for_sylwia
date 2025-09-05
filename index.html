@@ -1,109 +1,96 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <style>
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: #f0f0f0;
-        }
-        
-        .bubble {
-            position: relative;
-            border-radius: 50%;
-            margin: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            animation: pulse 2s infinite;
-        }
-        
-        .bubble-content {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: white;
-            font-family: Arial, sans-serif;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 0.7; }
-            50% { transform: scale(1.05); opacity: 0.9; }
-            100% { transform: scale(1); opacity: 0.7; }
-        }
-        
-        .info-panel {
-            display: none;
-            position: absolute;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0,0,0,0.2);
-            max-width: 300px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Sylwia is Back</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, #1e1e2f, #0d0d15);
+      overflow: hidden;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    h1 {
+      font-size: 5rem;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      opacity: 0;
+      transform: scale(0.5);
+      animation: fadeInZoom 2s ease forwards, glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes fadeInZoom {
+      0% {
+        opacity: 0;
+        transform: scale(0.5) rotate(-10deg);
+      }
+      60% {
+        opacity: 1;
+        transform: scale(1.1) rotate(2deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0);
+      }
+    }
+
+    @keyframes glow {
+      from {
+        text-shadow: 0 0 10px #ff4d6d, 0 0 20px #ff4d6d, 0 0 30px #ff006e;
+      }
+      to {
+        text-shadow: 0 0 20px #ffb347, 0 0 40px #ff6f61, 0 0 60px #ff4d6d;
+      }
+    }
+
+    /* Floating Particles */
+    .particle {
+      position: absolute;
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 50%;
+      pointer-events: none;
+      animation: floatUp linear forwards;
+    }
+
+    @keyframes floatUp {
+      from {
+        transform: translateY(100vh) scale(0.5);
+        opacity: 1;
+      }
+      to {
+        transform: translateY(-10vh) scale(1);
+        opacity: 0;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <div class="bubble" id="traffic" style="width: 150px; height: 150px; background: rgba(128,128,128,0.8);">
-            <div class="bubble-content">
-                <h3>Traffic</h3>
-                <p>30% CO₂</p>
-            </div>
-        </div>
-        
-        <div class="bubble" id="vehicle" style="width: 180px; height: 180px; background: rgba(128,128,128,0.9);">
-            <div class="bubble-content">
-                <h3>Vehicle</h3>
-                <p>59% CO₂</p>
-            </div>
-        </div>
-        
-        <div class="bubble" id="weather" style="width: 130px; height: 130px; background: rgba(128,128,128,0.7);">
-            <div class="bubble-content">
-                <h3>Weather</h3>
-                <p>25% CO₂</p>
-            </div>
-        </div>
-    </div>
+  <h1>Sylwia is back</h1>
 
-    <div id="info-panel" class="info-panel"></div>
+  <script>
+    // Generate floating particles
+    function createParticle() {
+      const particle = document.createElement("div");
+      particle.classList.add("particle");
+      const size = Math.random() * 8 + 3; // size between 3–11px
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${Math.random() * 100}vw`;
+      particle.style.animationDuration = `${Math.random() * 4 + 3}s`;
+      document.body.appendChild(particle);
 
-    <script>
-        const bubbleData = {
-            traffic: {
-                title: "Traffic Impact",
-                details: "• Idle time increases fuel usage\n• Stop-and-go: +30% CO₂\n• Peak hours worsen impact"
-            },
-            vehicle: {
-                title: "Vehicle Impact",
-                details: "• Vans: 3-4x higher CO₂\n• Fleet composition crucial\n• EVs reduce emissions by 59%"
-            },
-            weather: {
-                title: "Weather Impact",
-                details: "• Extends delivery times\n• Increases fuel consumption\n• Adds 20-25% more CO₂"
-            }
-        };
+      setTimeout(() => {
+        particle.remove();
+      }, 7000);
+    }
 
-        const bubbles = document.querySelectorAll('.bubble');
-        const infoPanel = document.getElementById('info-panel');
-
-        bubbles.forEach(bubble => {
-            bubble.addEventListener('mouseover', (e) => {
-                const data = bubbleData[e.currentTarget.id];
-                infoPanel.innerHTML = `<h3>${data.title}</h3><p>${data.details}</p>`;
-                infoPanel.style.display = 'block';
-                infoPanel.style.left = e.pageX + 20 + 'px';
-                infoPanel.style.top = e.pageY + 'px';
-            });
-
-            bubble.addEventListener('mouseout', () => {
-                infoPanel.style.display = 'none';
-            });
-        });
-    </script>
+    setInterval(createParticle, 200);
+  </script>
 </body>
 </html>
